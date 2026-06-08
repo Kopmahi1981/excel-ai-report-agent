@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+AI_Report.pdf
+cleaned_dataset.xlsx
