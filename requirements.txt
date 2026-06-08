@@ -5,3 +5,4 @@ matplotlib
 plotly
 kaleido
 google-generativeai
+fpdf2
