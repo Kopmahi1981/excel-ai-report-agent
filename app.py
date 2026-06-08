@@ -129,9 +129,9 @@ if uploaded_file:
         values="Investment Amount",
         title="Investment Type Distribution"
         )
-        pie_fig.write_image("piechart.png")
-        bar_fig.write_image("barchart.png")
-        fig.write_image("chart.png")
+        # fig.write_image("chart.png")
+        # bar_fig.write_image("barchart.png")
+        # pie_fig.write_image("piechart.png")
 
         st.plotly_chart(fig, use_container_width=True)
 
