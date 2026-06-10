@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 AI_Report.pdf
 cleaned_dataset.xlsx
+Backup/
+AI-Excel-Report-Agent-V3.1-Backup.zip/
+*.png

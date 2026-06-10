@@ -14,7 +14,7 @@ class PDF(FPDF):
         self.cell(
             0,
             10,
-            f"KRISH AI Excel Report Agent | Page {self.page_no()}",
+            f"AI EXCEL REPORT AGENT PRO | Page {self.page_no()}",
             0,
             0,
             "C"
@@ -28,9 +28,9 @@ def create_pdf_report(
     column_names,
     statistics,
     duplicate_rows,
-    average_investment,
-    highest_investment,
-    lowest_investment,
+    avg_numeric_value,
+    numeric_max,
+    numeric_min,
     duplicates_found,
     duplicates_removed,
     missing_before,
@@ -83,36 +83,73 @@ def create_pdf_report(
     # Cover Page
     pdf.add_page()
     pdf.set_font("Arial", "B", 24)
+    pdf.set_text_color(0, 51, 102)
 
     pdf.ln(40)
 
     pdf.cell(
         0,
         15,
-        "KRISH AI EXCEL REPORT",
+        "KRISH AI EXCEL REPORT AGENT PRO",
         ln=True,
         align="C"
     )
-    pdf.ln(15)
 
-    pdf.set_font("Arial", "I", 14)
+    pdf.ln(10)
+
+    pdf.set_font("Arial", "B", 12)
+
+    pdf.ln(5)
+
+    pdf.set_font("Arial", "", 11)
+
+    
 
     pdf.cell(
         0,
-        10,
-        "Professional Data Analysis Report",
+        8,
+        "Report ID: AI-2026-001",
         ln=True,
         align="C"
     )
 
+    pdf.cell(
+        0,
+        8,
+        f"Generated On: {datetime.now().strftime('%d-%m-%Y')}",
+        ln=True,
+        align="C"
+    )
+
+    pdf.ln(5)
+
+    pdf.ln(3)
+
+    pdf.line(
+        30,
+        pdf.get_y(),
+        180,
+        pdf.get_y()
+    )
+
+    pdf.ln(10)
+
+    pdf.set_text_color(0, 0, 0)
+
+    pdf.ln(10)
+
+    pdf.set_font("Arial", "I", 14)
+
+    
     pdf.ln(40)
 
     pdf.set_font("Arial", "", 12)
 
+
     pdf.cell(
         0,
         8,
-        f"Generated On: {datetime.now().strftime('%d-%m-%Y %H:%M')}",
+        "Version 4.0 Universal",
         ln=True,
         align="C"
     )
@@ -120,42 +157,33 @@ def create_pdf_report(
     pdf.cell(
         0,
         8,
-        "Prepared By: AI Excel Report Agent",
+        "AI-Powered Business Intelligence",
         ln=True,
         align="C"
     )
-
     pdf.cell(
         0,
         8,
-        "Version: V3.0",
-        ln=True,
-        align="C"
-    )
-
-    pdf.cell(
-        0,
-        8,
-        "Powered By: Gemini AI",
+        "Transform Raw Data Into Actionable Insights",
         ln=True,
         align="C"
     )
 
     pdf.ln(20)
 
-    pdf.set_font("Arial", "I", 12)
+    pdf.set_font("Arial", "I", 16)
 
     pdf.cell(
         0,
         10,
-        "Investment Data Intelligence Report",
+        "Universal Dataset Intelligence Report",
         ln=True,
         align="C"
     )
 
     pdf.add_page()
 
-    pdf.set_font("Arial", "B", 16)
+    pdf.set_font("Arial", "B", 12)
 
     pdf.cell(
         0,
@@ -166,21 +194,20 @@ def create_pdf_report(
 
     pdf.ln(5)
 
+    pdf.set_font("Arial", "B", 11)
+
+    pdf.cell(0, 8, "DATA QUALITY METRICS", ln=True)
+
+    pdf.ln(3)
+
     pdf.set_font("Arial", "", 11)
 
-    summary_text = (
-        f"This dataset contains {rows} records and {columns} columns.\n\n"
-        f"The dataset is {round(completeness,2)}% complete.\n\n"
-        f"Data quality score is {quality_score}/100.\n\n"
-        f"The average investment amount is Rs.{average_investment:,.2f}.\n\n"
-        f"Immediate action is recommended to improve overall data quality."
-    )
+    pdf.cell(0, 8, f"Missing Values: {missing_values}", ln=True)
+
+    pdf.cell(0, 8, f"Duplicate Rows: {duplicate_rows}", ln=True)
+
+    pdf.cell(0, 8, f"Data Completeness: {round(completeness,2)}%", ln=True)
     
-    pdf.multi_cell(
-        0,
-        8,
-        summary_text
-    )
 
     pdf.ln(10)
 
@@ -212,70 +239,135 @@ def create_pdf_report(
 
     pdf.ln(5)
 
+    pdf.line(
+        30,
+        pdf.get_y(),
+        180,
+        pdf.get_y()
+    )
+
+    pdf.ln(5)
+
+    pdf.ln(3)
+
+    pdf.set_font("Arial", "", 12)
+    # Card 1 - Total Records
+    pdf.rect(20, 60, 40, 30)
+
+    pdf.set_xy(22, 65)
+    pdf.set_font("Arial", "B", 10)
+    pdf.cell(30, 5, "Records")
+
+    pdf.set_xy(22, 75)
+    pdf.set_font("Arial", "", 12)
+    pdf.cell(30, 5, str(rows))
+
+    # Card 2 - Quality Score
+    pdf.rect(70, 60, 40, 30)
+
+    pdf.set_xy(72, 65)
+    pdf.set_font("Arial", "B", 10)
+    pdf.cell(30, 5, "Quality")
+
+    pdf.set_xy(74, 76)
+    pdf.set_font("Arial", "", 12)
+    pdf.cell(30, 5, f"{quality_score}/100")
+    # Card 3 - Health
+    pdf.rect(115, 60, 40, 30)
+
+    pdf.set_xy(122, 65)
+    pdf.set_font("Arial", "B", 10)
+    pdf.cell(30, 5, "Health")
+
+    pdf.set_xy(122, 78)
+    pdf.set_font("Arial", "", 12)
+    pdf.cell(30, 5, health_status)
+    # Card 4 - Risk
+    pdf.rect(165, 60, 35, 30)
+
+    pdf.set_xy(157, 65)
+    pdf.set_font("Arial", "B", 10)
+    pdf.cell(20, 5, "Risk")
+
+    pdf.set_xy(157, 78)
+    pdf.set_font("Arial", "", 10)
+    pdf.cell(20, 5, risk_level)
+
+    pdf.set_y(100)
+    
+
+    pdf.ln(5)
+
+    pdf.set_font("Arial", "B", 12)
+    pdf.set_text_color(0, 51, 102)
+
+    pdf.set_font("Arial", "B", 12)
+
+    pdf.cell(0, 8, "DATA QUALITY METRICS", ln=True, align="C")
+    pdf.ln(2)
+
+    pdf.set_font("Arial", "", 11)
+    duplicate_penalty = (duplicate_rows / rows) * 100
+
+    quality_score = max(
+    0,
+    round(completeness - duplicate_penalty, 2)
+)
+
+    score_percent = quality_score
+
+    pdf.cell(0, 8, f"Overall Score: {score_percent}/100", ln=True)
+    pdf.cell(0, 8, f"Dataset Health: {health_status}", ln=True)
+    pdf.cell(0, 8, f"Data Completeness: {round(completeness,2)}%", ln=True)
+    pdf.ln(8)
+    pdf.set_text_color(0, 0, 0)
+
+    score_percent = round(quality_score)
+
+    pdf.set_font("Arial", "B", 12)
+
     pdf.cell(
         0,
         8,
-        "-" * 50,
+        f"OVERALL SCORE: {score_percent}/100",
+        ln=True,
+        align="C"
+    )
+
+    pdf.set_font("Arial", "", 11)
+
+    pdf.cell(
+        0,
+        8,
+        f"Dataset Health: {health_status}",
         ln=True,
         align="C"
     )
 
     pdf.ln(3)
 
-    pdf.set_font("Arial", "", 12)
+    pdf.set_font("Arial", "", 11)
 
     pdf.cell(
         0,
-        10,
-        f"Total Records        : {rows}",
+        8,
+        f"Missing Values : {missing_values}",
         ln=True,
         align="C"
     )
 
     pdf.cell(
         0,
-        10,
-        f"Missing Values      : {missing_values}",
+        8,
+        f"Duplicate Rows : {duplicate_rows}",
         ln=True,
         align="C"
     )
 
     pdf.cell(
         0,
-        10,
-        f"Duplicate Rows      : {duplicate_rows}",
-        ln=True,
-        align="C"
-    )
-
-    pdf.cell(
-        0,
-        10,
-        f"Data Completeness   : {round(completeness,2)}%",
-        ln=True,
-        align="C"
-    )
-
-    pdf.cell(
-        0,
-        10,
-        f"Quality Score       : {quality_score}/100",
-        ln=True,
-        align="C"
-    )
-
-    pdf.cell(
-        0,
-        10,
-        f"Dataset Health      : {health_status}",
-        ln=True,
-        align="C"
-    )
-
-    pdf.cell(
-        0,
-        10,
-        f"Risk Level : {risk_level}",
+        8,
+        f"Data Completeness : {round(completeness,2)}%",
         ln=True,
         align="C"
     )
@@ -311,7 +403,7 @@ def create_pdf_report(
 
     pdf.ln(10)
 
-    pdf.add_page()
+    #pdf.add_page()
 
     # Dataset Summary
 
@@ -344,21 +436,21 @@ def create_pdf_report(
     pdf.cell(
         0,
         8,
-        f"Average Investment: {round(average_investment, 2)}",
+        f"Average Numeric Value: {round(avg_numeric_value, 2)}",
         ln=True
     )
 
     pdf.cell(
         0,
         8,
-        f"Highest Investment: {round(highest_investment, 2)}",
+        f"Maximum Numeric Value: {round(numeric_max, 2)}",
         ln=True
     )
 
     pdf.cell(
         0,
         8,
-        f"Lowest Investment: {round(lowest_investment, 2)}",
+        f"Minimum Numeric Value: {round(numeric_min, 2)}",
         ln=True
     )
 
@@ -500,6 +592,8 @@ def create_pdf_report(
             ln=True
         )
 
+    if "mean" in values:
+
         pdf.cell(
             0,
             8,
@@ -518,6 +612,15 @@ def create_pdf_report(
             0,
             8,
             f"Max: {round(values['max'], 2)}",
+            ln=True
+        )
+
+    else:
+
+        pdf.cell(
+            0,
+            8,
+            "Categorical Column",
             ln=True
         )
 
@@ -550,7 +653,7 @@ def create_pdf_report(
 
     3. Duplicate records found: {duplicate_rows}.
 
-    4. Average investment amount is Rs.{average_investment:,.2f}.
+    4. The average numeric value of {avg_numeric_value:,.2f}.
 
     5. Dataset health status is {health_status}.
     """
@@ -580,7 +683,7 @@ def create_pdf_report(
     2. Improving data quality can increase confidence in business decisions.
 
     3. The current quality score of {round(quality_score, 2)}/100 suggests immediate attention is required.
-    4. The average investment amount of Rs.{average_investment:,.2f} indicates significant financial activity that requires accurate data for analysis.
+    4. Average numeric value is {avg_numeric_value:,.2f}. indicates significant financial activity that requires accurate data for analysis.
     """
     )
 
@@ -609,11 +712,11 @@ def create_pdf_report(
 
     pdf.ln(3)
 
-    pdf.image(
-        "chart.png",
-        x=10,
-        w=180
-    )
+    # pdf.image(
+    #     "chart.png",
+    #     x=10,
+    #     w=180
+    # )
 
     pdf.set_font("Arial", "B", 14)
 
@@ -628,19 +731,19 @@ def create_pdf_report(
 
     pdf.ln(5)
 
-    pdf.image(
-        "barchart.png",
-        x=10,
-        w=180
-    )
+    # pdf.image(
+    #     "barchart.png",
+    #     x=10,
+    #     w=180
+    # )
 
     pdf.ln(10)
 
-    pdf.image(
-        "piechart.png",
-        x=10,
-        w=150
-    )
+    # pdf.image(
+    #     "piechart.png",
+    #     x=10,
+    #     w=180
+    # )
 
     pdf.ln(10)
     pdf.set_x(10)
@@ -675,7 +778,7 @@ def create_pdf_report(
             "HIGH PRIORITY: Perform data cleansing and validation to improve overall dataset quality."
     )
 
-    if average_investment > 300000:
+    if avg_numeric_value> 300000:
         recommendations.append(
             "MEDIUM PRIORITY: Analyze top-performing investment categories and optimize portfolio allocation."
     )
@@ -711,11 +814,11 @@ def create_pdf_report(
     pdf.ln(3)
 
     executive_text = (
-    f"The dataset contains {rows} investment records with a completeness level of {round(completeness,2)}%.\n\n"
+    f"The dataset contains {rows} records with a completeness level of {round(completeness,2)}%.\n\n"
     
-    f"A total of {duplicate_rows} duplicate records were identified, which may affect reporting accuracy and business decision-making.\n\n"
+    f"{'No duplicate records were detected.' if duplicate_rows == 0 else f'A total of {duplicate_rows} duplicate records were identified, which may affect reporting accuracy and business decision-making.'}\n\n"
     
-    f"The average investment amount is Rs.{average_investment:,.2f}, indicating the overall scale of investment activity.\n\n"
+    f"Average Numeric Value: {round(avg_numeric_value, 2)}, indicating the overall scale of numeric activity.\n\n"
     
     f"Current data quality score is {quality_score}/100 and the dataset health status is classified as {health_status}.\n\n"
     
@@ -723,7 +826,7 @@ def create_pdf_report(
     "Organizations should prioritize data quality improvements before relying on this dataset for critical business decisions.\n\n"
     
     "Risk Assessment:\n"
-    "Current risk level is HIGH due to the large number of duplicate records.\n\n"
+    f"Current risk level is {'HIGH' if duplicate_rows > 0 else 'LOW'}. Dataset quality is {'good' if duplicate_rows == 0 else 'affected by duplicate records'}.\n\n"
     
     "Expected Outcome:\n"
     "Removing duplicates and validating data quality can significantly improve reporting accuracy and decision-making confidence."

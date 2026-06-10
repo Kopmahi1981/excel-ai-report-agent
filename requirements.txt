@@ -4,5 +4,5 @@ openpyxl
 matplotlib
 plotly
 kaleido
-google-generativeai
+google-generativeai>=0.8.0
 fpdf2
